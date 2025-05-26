@@ -39,7 +39,3 @@ kotlin {
         }
     }
 }
-
-compose {
-    // No longer needed for Compose 1.6.10+
-}

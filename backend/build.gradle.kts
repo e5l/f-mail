@@ -11,6 +11,7 @@ application {
 
 dependencies {
     implementation(project(":core"))
+    implementation(libs.kotlinx.datetime)
     
     // Ktor
     implementation(libs.ktor.server.core)
