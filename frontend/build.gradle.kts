@@ -9,8 +9,14 @@ kotlin {
     @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
         browser {
+            commonWebpackConfig {
+                outputFileName = "fmail.js"
+            }
+            runTask {
+                outputFileName = "fmail.js"
+            }
             webpackTask {
-                mainOutputFileName = "fmail.js"
+                outputFileName = "fmail.js"
             }
         }
         binaries.executable()
@@ -38,4 +44,24 @@ kotlin {
             }
         }
     }
+}
+
+// Task to copy index.html to webpack output
+tasks.register<Copy>("copyIndexHtml") {
+    from("src/wasmJsMain/resources/index.html")
+    into("build/dist/wasmJs/productionExecutable")
+}
+
+tasks.register<Copy>("copyIndexHtmlDev") {
+    from("src/wasmJsMain/resources/index.html")
+    into("build/dist/wasmJs/developmentExecutable")
+}
+
+// Make webpack tasks depend on copying index.html
+tasks.named("wasmJsBrowserProductionWebpack") {
+    finalizedBy("copyIndexHtml")
+}
+
+tasks.named("wasmJsBrowserDevelopmentWebpack") {
+    finalizedBy("copyIndexHtmlDev")
 }
